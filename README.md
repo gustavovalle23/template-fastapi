@@ -1,4 +1,6 @@
-utils commands:
+<h3>utils commands:</h3>
 
-run application: uvicorn app.main:app --reload
-install dependencies: pip3 install -r requirements.txt
+<ul>
+  <li>run application: uvicorn app.main:app --reload</li>
+  <li>install dependencies: pip3 install -r requirements.txt</li>
+</ul>
