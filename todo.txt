@@ -1,0 +1,3 @@
+- convert user to user_dto -> do not send password in resposne
+- make create_user
+- make login with jwt with custom informations of user
