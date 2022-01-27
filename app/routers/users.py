@@ -1,8 +1,10 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database.config import SessionLocal
 from app.repository import user_repository
-from app.database.schemas import UserBase
+from app.database.schemas import User, UserBase
+from app.shared.user_dto import convert
 
 router = APIRouter()
 
@@ -17,8 +19,10 @@ def get_db():
 
 @router.get('/user/all', tags=['users'])
 async def read_users(db: Session = Depends(get_db)):
-    users = user_repository.find_all(db)
-    return users
+    users: List[User] = user_repository.find_all(db)
+    users_dto = [convert(user) for user in users]
+
+    return users_dto
 
 
 @router.post('/user/register', tags=['users'])

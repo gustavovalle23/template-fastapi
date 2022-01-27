@@ -1,4 +1,3 @@
-from app.database.config import SessionLocal
 from sqlalchemy.orm import Session
 from app.database import models
 from app.database.schemas import UserBase
