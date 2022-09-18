@@ -16,4 +16,4 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 
 ## Run tests
-python -m pytest tests/user.py -s
+python -m pytest tests/user.py -s -vv
