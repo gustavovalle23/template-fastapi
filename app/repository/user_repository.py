@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
 from app.database.models import User
-from app.database.schemas import UserBase
+from app.shared.inputs.create_user import CreateUserInput
 from app.shared.inputs.update_user import UpdateUserInput
 
 
@@ -19,7 +19,7 @@ def find_by_id(db: Session, user_id: int) -> User | None:
     return user
 
 
-def save(db: Session, user: UserBase):
+def save(db: Session, user: CreateUserInput):
     user = User(email=user.email, password=user.password)
     db.add(user)
     db.commit()

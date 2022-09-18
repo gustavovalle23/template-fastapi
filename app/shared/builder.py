@@ -8,6 +8,7 @@ class UserBuilder:
     @staticmethod
     def build(user: User) -> UserDTO:
         dto = UserDTO()
+        dto.id = user.id
         dto.email = user.email
         dto.active = user.active
         return dto

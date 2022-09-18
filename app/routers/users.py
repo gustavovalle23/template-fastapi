@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 import bcrypt
 
 from app.database.config import get_db
+from app.database.models import User
 from app.repository import user_repository
-from app.database.schemas import User, UserBase
 from app.shared.builder import UserBuilder
 from app.shared.inputs.create_user import CreateUserInput
 from app.shared.inputs.update_user import UpdateUserInput

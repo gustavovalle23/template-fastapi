@@ -18,13 +18,13 @@ def run_around_tests():
 def test_should_list_users():
     response = client.get("/user/all")
     assert response.status_code == 200
-    assert response.json() == [{'email': 'admin@gmail.com', 'active': True}, {'email': 'admin2@gmail.com', 'active': True}]
+    assert response.json() == [{'id': 1, 'email': 'admin@gmail.com', 'active': True}, {'id': 2, 'email': 'admin2@gmail.com', 'active': True}]
 
 
 def test_should_get_an_user():
     response = client.get("/user/1")
     assert response.status_code == 200
-    assert response.json() == {'email': 'admin@gmail.com', 'active': True}
+    assert response.json() == {'id': 1, 'email': 'admin@gmail.com', 'active': True}
 
 
 def test_should_update_an_user():
