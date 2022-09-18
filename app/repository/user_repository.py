@@ -4,8 +4,8 @@ from app.database.models import User
 from app.database.schemas import UserBase
 
 
-def find_all(db: Session):
-    return db.query(User).filter(User.active == True).all()
+def find_all(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(User).offset(skip).limit(limit).filter(User.active == True).all()
 
 
 def find_by_email(db: Session, email: str) -> User | None:
