@@ -5,7 +5,7 @@ from app.database.schemas import UserBase
 
 
 def find_all(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(User).offset(skip).limit(limit).filter(User.active == True).all()
+    return db.query(User).filter(User.active == True).offset(skip).limit(limit)
 
 
 def find_by_email(db: Session, email: str) -> User | None:
