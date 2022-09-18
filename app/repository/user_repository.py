@@ -2,6 +2,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from app.database.models import User
 from app.database.schemas import UserBase
+from app.shared.inputs.update_user import UpdateUserInput
 
 
 def find_all(db: Session, skip: int = 0, limit: int = 100):
@@ -14,7 +15,7 @@ def find_by_email(db: Session, email: str) -> User | None:
 
 
 def find_by_id(db: Session, user_id: int) -> User | None:
-    user: Optional[User] = db.query(User).where(User.id == user_id)
+    user = db.query(User).filter(User.id == user_id).one()
     return user
 
 
@@ -25,8 +26,8 @@ def save(db: Session, user: UserBase):
     return user
 
 
-def update(db: Session, user_id: int, user: UserBase) -> None:
+def update(db: Session, user_id: int, user: UpdateUserInput) -> None:
     db.query(User).filter(User.id == user_id).update(
-        {'email': user.email, 'password': user.password}
+        {'email': user.email, 'active': user.active}
     )
     db.commit()

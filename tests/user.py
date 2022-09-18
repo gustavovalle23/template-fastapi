@@ -1,5 +1,6 @@
-from fastapi.testclient import TestClient
+import json
 import pytest
+from fastapi.testclient import TestClient
 
 from app.main import app
 from tests.seeds import UserSeed
@@ -14,7 +15,27 @@ def run_around_tests():
     UserSeed.remove_all()
 
 
-def test_should_check_list_users_endpoint():
+def test_should_list_users():
     response = client.get("/user/all")
     assert response.status_code == 200
-    assert response.json() == [{'email': 'admin@gmail.com'}, {'email': 'admin2@gmail.com'}]
+    assert response.json() == [{'email': 'admin@gmail.com', 'active': True}, {'email': 'admin2@gmail.com', 'active': True}]
+
+
+def test_should_get_an_user():
+    response = client.get("/user/1")
+    assert response.status_code == 200
+    assert response.json() == {'email': 'admin@gmail.com', 'active': True}
+
+
+def test_should_update_an_user():
+    user = json.dumps({'email': 'admin_updated@gmail.com', 'active': True})
+    update_user = client.post("/user/1", data=user)
+    assert update_user.status_code == 200
+    user_updated = client.get("/user/1")
+    assert user_updated.json()['email'] == 'admin_updated@gmail.com'
+
+
+def test_should_create_an_user():
+    user = json.dumps({'email': 'new_user@gmail.com', 'password': '123', 'active': True})
+    response = client.post("/user/register", data=user)
+    assert response.status_code == 201
