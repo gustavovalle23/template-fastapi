@@ -1,0 +1,5 @@
+###
+GET http://localhost:8000/user/all
+
+###
+POST http://localhost:8000/user/register
