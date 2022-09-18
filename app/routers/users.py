@@ -4,8 +4,6 @@ from sqlalchemy.orm import Session
 from app.database.config import SessionLocal
 from app.repository import user_repository
 from app.database.schemas import User, UserBase
-from app.shared.authentication_dto import AuthDTO
-from app.service import user_service
 from app.shared.user_dto import UserDTO, convert
 
 router = APIRouter()
@@ -31,8 +29,3 @@ async def read_users(db: Session = Depends(get_db)):
 async def save_user(user: UserBase, db: Session = Depends(get_db)):
     user_repository.save(db, user)
     return {'message': 'ok'}
-
-
-@router.post('/user/authenticate', tags=['user'])
-async def authenticate(authentication_dto: AuthDTO):
-    user_service.authenticate(authentication_dto)
