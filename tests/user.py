@@ -19,13 +19,18 @@ def run_around_tests():
 def test_should_list_users():
     response: Response = client.get("/user/all")
     assert response.status_code == 200
-    assert response.json() == [{'id': 1, 'email': 'admin@gmail.com', 'active': True}, {'id': 2, 'email': 'admin2@gmail.com', 'active': True}]
+    assert response.json() == [
+        {'id': 1, 'email': 'admin@gmail.com', 'active': True},
+        {'id': 2, 'email': 'admin2@gmail.com', 'active': True}
+    ]
 
 
 def test_should_get_an_user():
     response: Response = client.get("/user/1")
     assert response.status_code == 200
-    assert response.json() == {'id': 1, 'email': 'admin@gmail.com', 'active': True}
+    assert response.json() == {
+        'id': 1, 'email': 'admin@gmail.com', 'active': True
+    }
 
 
 def test_should_update_an_user():
@@ -37,6 +42,8 @@ def test_should_update_an_user():
 
 
 def test_should_create_an_user():
-    user = json.dumps({'email': 'new_user@gmail.com', 'password': '123', 'active': True})
+    user = json.dumps({'email': 'new_user@gmail.com',
+                      'password': '123', 'active': True})
     response: Response = client.post("/user/register", data=user)
     assert response.status_code == 201
+    assert response.json().get('user').get('id') != None

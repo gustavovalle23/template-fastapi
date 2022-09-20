@@ -1,3 +1,5 @@
+from random import random
+import string
 from typing import Optional
 from sqlalchemy.orm import Session
 from app.database.models import User
@@ -31,3 +33,20 @@ def update(db: Session, user_id: int, user: UpdateUserInput) -> None:
         {'email': user.email, 'active': user.active}
     )
     db.commit()
+
+def inactivate(db: Session, user_id: int) -> None:
+    db.query(User).filter(User.id == user_id).update(
+        {'active': False}
+    )
+    db.commit()
+
+
+def delete(db: Session, user_id: int, user: UpdateUserInput) -> None:
+    db.query(User).filter(User.id == user_id).update(
+        {'email': random_string(), 'active': False, 'password': random_string()}
+    )
+    db.commit()
+
+
+def random_string():
+    return ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(10))

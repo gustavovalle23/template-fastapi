@@ -29,10 +29,16 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
 async def save_user(user: CreateUserInput, db: Session = Depends(get_db)):
     user.password = bcrypt.hashpw(user.password.encode(), bcrypt.gensalt())
     user_created = user_repository.save(db, user)
-    return {'message': UserBuilder.build(user_created)}
+    return {'user': UserBuilder.build(user_created)}
 
 
 @router.post('/user/{user_id}', tags=['users'])
 async def update_user(user_id: int, user: UpdateUserInput, db: Session = Depends(get_db)):
     user_repository.update(db, user_id, user)
     return {'message': 'updated'}
+
+
+@router.delete('/user/{user_id}', tags=['users'])
+async def update_user(user_id: int, db: Session = Depends(get_db)):
+    user_repository.delete(db, user_id)
+    return {'message': 'deleted'}
