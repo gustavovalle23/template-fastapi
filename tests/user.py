@@ -17,7 +17,7 @@ def run_around_tests():
 
 
 def test_should_list_users():
-    response: Response = client.get("/user/all")
+    response: Response = client.get("/users")
     assert response.status_code == 200
     assert response.json() == [
         {'id': 1, 'email': 'admin@gmail.com', 'active': True},
@@ -47,3 +47,10 @@ def test_should_create_an_user():
     response: Response = client.post("/user/register", data=user)
     assert response.status_code == 201
     assert response.json().get('user').get('id') != None
+
+
+def test_should_delete_an_user():
+    response: Response = client.delete("/user/1")
+    assert response.status_code == 200
+    response: Response = client.get("/user/1")
+    print(response.json())

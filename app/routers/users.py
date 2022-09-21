@@ -13,32 +13,38 @@ from app.shared.inputs.update_user import UpdateUserInput
 router = APIRouter()
 
 
-@router.get('/user/all', tags=['users'])
+@router.get('/users', tags=['users'])
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users: List[User] = user_repository.find_all(db, skip, limit)
     return UserBuilder.build_all(users)
 
 
-@router.get('/user/{user_id}', tags=['users'])
+@router.get('/users/{user_id}', tags=['users'])
 async def read_user(user_id: int, db: Session = Depends(get_db)):
     user: User = user_repository.find_by_id(db, user_id)
     return UserBuilder.build(user)
 
 
-@router.post('/user/register', tags=['users'], status_code=status.HTTP_201_CREATED)
+@router.post('/users', tags=['users'], status_code=status.HTTP_201_CREATED)
 async def save_user(user: CreateUserInput, db: Session = Depends(get_db)):
     user.password = bcrypt.hashpw(user.password.encode(), bcrypt.gensalt())
     user_created = user_repository.save(db, user)
     return {'user': UserBuilder.build(user_created)}
 
 
-@router.post('/user/{user_id}', tags=['users'])
+@router.post('/users/inactivate/{user_id}', tags=['users'])
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user_repository.inactivate(db, user_id)
+    return {'message': 'inactivated'}
+
+
+@router.post('/users/{user_id}', tags=['users'])
 async def update_user(user_id: int, user: UpdateUserInput, db: Session = Depends(get_db)):
     user_repository.update(db, user_id, user)
     return {'message': 'updated'}
 
 
-@router.delete('/user/{user_id}', tags=['users'])
-async def update_user(user_id: int, db: Session = Depends(get_db)):
+@router.delete('/users/{user_id}', tags=['users'])
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
     user_repository.delete(db, user_id)
     return {'message': 'deleted'}

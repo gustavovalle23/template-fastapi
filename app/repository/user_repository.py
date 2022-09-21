@@ -1,4 +1,4 @@
-from random import random
+import random
 import string
 from typing import Optional
 from sqlalchemy.orm import Session
@@ -17,7 +17,7 @@ def find_by_email(db: Session, email: str) -> User | None:
 
 
 def find_by_id(db: Session, user_id: int) -> User | None:
-    user = db.query(User).filter(User.id == user_id).one()
+    user = db.query(User).filter(User.id == user_id).filter(User.active == True).first()
     return user
 
 
@@ -34,6 +34,7 @@ def update(db: Session, user_id: int, user: UpdateUserInput) -> None:
     )
     db.commit()
 
+
 def inactivate(db: Session, user_id: int) -> None:
     db.query(User).filter(User.id == user_id).update(
         {'active': False}
@@ -41,7 +42,7 @@ def inactivate(db: Session, user_id: int) -> None:
     db.commit()
 
 
-def delete(db: Session, user_id: int, user: UpdateUserInput) -> None:
+def delete(db: Session, user_id: int) -> None:
     db.query(User).filter(User.id == user_id).update(
         {'email': random_string(), 'active': False, 'password': random_string()}
     )

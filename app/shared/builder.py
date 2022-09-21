@@ -14,8 +14,11 @@ class UserBuilder:
         return dto
     
     @staticmethod
-    def build_all(users: List[User]) -> List[UserDTO]:
-        return [
+    def build_all(users_db: List[User]) -> List[UserDTO]:
+        users = [
             UserBuilder.build(user)
-            for user in users
+            for user in users_db
         ]
+        return {
+            'users': users
+        }
