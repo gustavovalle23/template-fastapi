@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from app.database.models import User
 from app.shared.user_dto import UserDTO
@@ -12,13 +12,9 @@ class UserBuilder:
         dto.email = user.email
         dto.active = user.active
         return dto
-    
+
     @staticmethod
-    def build_all(users_db: List[User]) -> List[UserDTO]:
-        users = [
-            UserBuilder.build(user)
-            for user in users_db
-        ]
+    def build_all(users_db: List[User]) -> Tuple[UserDTO]:
         return {
-            'users': users
+            'users': tuple(map(UserBuilder.build, users_db))
         }
